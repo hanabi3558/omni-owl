@@ -1,0 +1,27 @@
+appId: com.omni-owl.app
+productName: OmniOwl
+directories:
+  buildResources: resources
+  output: dist
+files:
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!electron.vite.config.*'
+  - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+extraResources:
+  - from: resources/icon.png
+    to: icon.png
+asarUnpack:
+  - 'node_modules/ffmpeg-static/**'
+  - 'node_modules/@fugood/whisper.node/**'
+win:
+  target: nsis
+  icon: resources/icon.ico
+  signAndEditExecutable: false
+  sign: null
+afterPack: ./afterPack.cjs
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true

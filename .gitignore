@@ -1,0 +1,9 @@
+node_modules/
+out/
+dist/
+*.db
+.env
+.claude/
+# Screenshots
+螢幕擷取畫面*
+Gemini_Generated_Image*
