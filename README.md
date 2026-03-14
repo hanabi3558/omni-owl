@@ -1,6 +1,10 @@
-# OmniOwl
+<p align="center">
+  <img src="resources/icon.png" alt="OmniOwl" width="128" />
+</p>
 
-Windows 系統音訊錄音工具，支援離線語音轉錄與翻譯。
+<h1 align="center">OmniOwl</h1>
+
+<p align="center">Windows 系統音訊錄音工具，支援離線語音轉錄與翻譯。</p>
 
 ## 功能
 
