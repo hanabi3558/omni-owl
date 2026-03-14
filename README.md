@@ -4,101 +4,101 @@
 
 <h1 align="center">OmniOwl</h1>
 
-<p align="center">Windows 系統音訊錄音工具，支援離線語音轉錄與翻譯。</p>
+<p align="center">A Windows system audio recorder with offline speech transcription and translation.</p>
 
-## 功能
+## Features
 
-- **系統音訊錄製** — 透過 WASAPI loopback 擷取桌面音訊，儲存為 M4A (AAC 192k)
-- **語音轉錄** — 使用 Whisper (whisper.cpp) 離線轉錄，支援中/英/日/韓語及自動偵測
-- **重新轉錄** — 可切換語言後對已轉錄的錄音重新轉錄
-- **翻譯** — 透過本地 Ollama 將轉錄文字翻譯為繁體中文
-- **錄音管理** — 播放、重新命名、刪除、匯出錄音
-- **音量指示器** — 即時顯示錄音音量
-- **加密儲存** — 可選的 AES-256-GCM 加密
+- **System Audio Recording** — Captures desktop audio via WASAPI loopback, saved as M4A (AAC 192k)
+- **Speech Transcription** — Offline transcription using Whisper (whisper.cpp), supports Chinese / English / Japanese / Korean and auto-detect
+- **Re-transcription** — Re-transcribe recordings after switching language settings
+- **Translation** — Translate transcripts to Traditional Chinese via local Ollama
+- **Recording Management** — Play, rename, delete, and export recordings
+- **Level Meter** — Real-time audio level indicator
+- **Encrypted Storage** — Optional AES-256-GCM encryption
 
-## 技術架構
+## Tech Stack
 
-| 層級 | 技術 |
-|------|------|
-| 框架 | Electron + electron-vite |
-| 前端 | React + TypeScript + Tailwind CSS |
-| 狀態管理 | Zustand |
-| 音訊編碼 | ffmpeg-static (WebM → M4A) |
-| 語音辨識 | @fugood/whisper.node (whisper.cpp) |
-| 翻譯 | Ollama (本地 LLM) |
-| 資料庫 | sql.js (純 JS SQLite) |
+| Layer | Technology |
+|-------|------------|
+| Framework | Electron + electron-vite |
+| Frontend | React + TypeScript + Tailwind CSS |
+| State | Zustand |
+| Audio Encoding | ffmpeg-static (WebM → M4A) |
+| Speech Recognition | @fugood/whisper.node (whisper.cpp) |
+| Translation | Ollama (local LLM) |
+| Database | sql.js (pure JS SQLite) |
 
-## 安裝與開發
+## Getting Started
 
 ```bash
-# 安裝依賴
+# Install dependencies
 npm install
 
-# 開發模式
+# Development
 npm run dev
 
-# 建置
+# Build
 npm run build
 
-# 打包安裝檔 (Windows)
+# Package installer (Windows)
 npx electron-builder --win
 ```
 
-安裝檔輸出至 `dist/OmniOwl Setup 1.0.0.exe`。
+The installer is output to `dist/OmniOwl Setup 1.0.0.exe`.
 
-## 使用前準備
+## Prerequisites
 
-### Whisper 模型
+### Whisper Model
 
-語音轉錄需要下載 GGML 模型檔案：
+A GGML model file is required for speech transcription:
 
-1. 至 [ggerganov/whisper.cpp (Hugging Face)](https://huggingface.co/ggerganov/whisper.cpp/tree/main) 下載模型
-2. 開啟 Settings → Whisper Model File → Browse 選擇下載的 `.bin` 檔案
+1. Download a model from [ggerganov/whisper.cpp (Hugging Face)](https://huggingface.co/ggerganov/whisper.cpp/tree/main)
+2. Open Settings → Whisper Model File → Browse and select the downloaded `.bin` file
 
-| 模型 | 大小 | 說明 |
-|------|------|------|
-| `ggml-base.bin` | ~142 MB | **英文推薦**，速度快、準確度佳 |
-| `ggml-medium.bin` | ~1.5 GB | **中文推薦** |
-| `ggml-large-v3.bin` | ~3 GB | 最佳品質，速度較慢 |
+| Model | Size | Notes |
+|-------|------|-------|
+| `ggml-base.bin` | ~142 MB | **Recommended for English** — fast and accurate |
+| `ggml-medium.bin` | ~1.5 GB | **Recommended for Chinese** |
+| `ggml-large-v3.bin` | ~3 GB | Best quality, slower |
 
-### Ollama（翻譯功能）
+### Ollama (Translation)
 
-翻譯功能需要本地執行 Ollama：
+Translation requires Ollama running locally:
 
-1. 安裝 [Ollama](https://ollama.com)
-2. 下載模型：`ollama pull gemma3:4b`
-3. 確保 Ollama 在 `localhost:11434` 運行
-4. Settings 中可自訂模型名稱
+1. Install [Ollama](https://ollama.com)
+2. Pull a model: `ollama pull gemma3:4b`
+3. Ensure Ollama is running on `localhost:11434`
+4. Optionally configure the model name in Settings
 
-## 專案結構
+## Project Structure
 
 ```
 src/
-├── main/                    # Electron 主程序
-│   ├── index.ts             # 主程序入口
-│   ├── ipc.ts               # IPC 處理器
+├── main/                    # Electron main process
+│   ├── index.ts             # Main entry point
+│   ├── ipc.ts               # IPC handlers
 │   └── services/
-│       ├── AudioCaptureService.ts   # ffmpeg 轉檔 + 檔案管理
-│       ├── StorageService.ts        # sql.js 資料庫
-│       └── WhisperService.ts        # Whisper 語音辨識
+│       ├── AudioCaptureService.ts   # ffmpeg conversion + file management
+│       ├── StorageService.ts        # sql.js database
+│       └── WhisperService.ts        # Whisper speech recognition
 ├── preload/
-│   ├── index.ts             # 主視窗 preload (contextBridge)
-│   └── transcript.ts        # 轉錄視窗 preload
+│   ├── index.ts             # Main window preload (contextBridge)
+│   └── transcript.ts        # Transcript window preload
 ├── renderer/src/
-│   ├── App.tsx              # 主頁面
+│   ├── App.tsx              # Main page
 │   ├── components/
-│   │   ├── RecordingControls.tsx    # 錄音按鈕 + 計時器 + 音量指示
-│   │   ├── SessionList.tsx          # 錄音列表
-│   │   ├── Settings.tsx             # 設定面板
-│   │   └── TranscriptWindow.tsx     # 轉錄結果視窗
+│   │   ├── RecordingControls.tsx    # Record button + timer + level meter
+│   │   ├── SessionList.tsx          # Recording list
+│   │   ├── Settings.tsx             # Settings panel
+│   │   └── TranscriptWindow.tsx     # Transcript viewer
 │   ├── hooks/
-│   │   ├── useRecording.ts          # 系統音訊擷取 + MediaRecorder
+│   │   ├── useRecording.ts          # System audio capture + MediaRecorder
 │   │   └── useSessions.ts           # Session CRUD
 │   └── store/
 │       └── useStore.ts              # Zustand store
 └── shared/
-    ├── ipc.ts               # IPC channel 常數
-    └── types.ts             # 共用型別定義
+    ├── ipc.ts               # IPC channel constants
+    └── types.ts             # Shared type definitions
 ```
 
 ## License
